@@ -45,11 +45,10 @@ ask_student_info :-
 	read_line_to_string(user_input, InputMail),
 	retractall(mail(_)),
 	assertz(mail(InputMail)),
-	% trace,
 	
 	nl,
 	writeln("What major are you following?"),
-	list_majors,
+	\+ list_majors,
 	read_line_to_string(user_input, InputMajor),
 	map(majorChosen, InputMajor, Major),
 	retractall(majorChosen(_)),
