@@ -1,11 +1,3 @@
-:- module(aoi_service,
-    [
-        get_all_area_of_interest/1,
-        get_area_of_interest_id/2,
-        is_in_area_of_interest/2
-    ]
-).
-
 :- [
     aoi_labels,
     areas/aoi_informatietechnologie,
@@ -20,9 +12,8 @@
 ].
 
 is_in_area_of_interest(Minor, Area) :-
-    get_minor_id(Minor, MID),
     get_area_of_interest_id(Area, AID),
-    is_in_area(MID, AID).
+    is_in_area(Minor, AID).
 
 get_area_of_interest_id(AreaLabel, AID) :-
     area_of_interest(AreaLabel, AID).

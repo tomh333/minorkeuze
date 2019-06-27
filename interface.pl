@@ -59,29 +59,34 @@ ask_minor_preferences :-
 	name(Name),
 	format("Welcome ~w, let's go more in depth.~nMINOR PREFERENCES~nIf you choose an invalid option, the first or 'no preference' value will be chosen.~n~46t~72|~n", Name),
 	
+	nl,
 	writeln("In which language do you prefer your minor?"),
-		writeln("1. English"),
-		writeln("2. Dutch"),
-		writeln("0. No preference"),
-	read_line_to_string(user_input, InputLanguage),
-	map(language, InputLanguage, Language),
+
+	get_all_language_labels(LanguageLabels),
+
+	read_user_select_from_list(
+		LanguageLabels, 
+		LanguageLabels, 
+		1, 
+	 	Language),
+	
 	retractall(language(_)),
 	assertz(language(Language)),
 	
-	period(Period),
 	nl,
 	writeln("In which period do you want to do your minor?"),
-		writeln("1. First period"),
-		writeln("2. Second period"),
-		writeln("3. Third period"),
-		writeln("4. Fourth period"),
-		writeln("0. No preference"),
-	read_line_to_string(user_input, InputPeriod),
-	map(period, InputPeriod, Period),
+
+	get_all_period_labels(PeriodLabels),
+
+	read_user_select_from_list(
+		PeriodLabels, 
+		PeriodLabels, 
+		1, 
+	 	Period),
+
 	retractall(period(_)),
 	assertz(period(Period)),
 	
-	goal(Goal),
 	nl,
 	writeln("What's your goal with your minor?"),
 		writeln("1. Broadening"),
@@ -91,17 +96,63 @@ ask_minor_preferences :-
 	map(goal, InputGoal, Goal),
 	retractall(goal(_)),
 	assertz(goal(Goal)),
+	process_goal_choiche(InputGoal),	
 	!.
+
+% In case the goal choiche is broadening, ask user to select an area of interest
+process_goal_choiche("1") :-
+	nl,
+	writeln("What field are you most interested in?"),
+
+	get_all_area_of_interest_labels(Labels),
+
+	read_user_select_from_list(
+		Labels, 
+		Labels, 
+		1, 
+	 	Area),
+
+	retractall(area(_)),
+	assertz(area(Area)).
+
+read_user_select_from_list([], List, _, Choiche) :-
+	read_line_to_string(user_input, SelectedIndexString),
+	atom_number(SelectedIndexString, X),	
+	nth1(X, List, Choiche).
+
+read_user_select_from_list([HL|TL], List, Count, Choiche) :-
+	format("~w: ~w \n", [Count, HL]),
+	NewCount is Count+1,
+	read_user_select_from_list(TL, List, NewCount, Choiche).
+
+show_list([]) :-
+	nl.
+
+show_list([LH|LT]) :-
+	writeln(LH),
+	show_list(LT).
 	
 show_stuff :-
 	name(Name1),
 	mail(Mail1),
 	majorChosen(MajorChosen),
-	
+	area(Area1),
 	language(Language1),
 	period(Period1),
 	goal(Goal1),
-	
-	format("Name: ~w,  Email: ~w,  Major: ~w, Language: ~w, Period: ~w, Goal: ~w", [Name1, Mail1, MajorChosen, Language1, Period1, Goal1]),
+
+	writeln("Based on the following info:"),
+
+	nl,
+	format("Name: ~w\nEmail: ~w\nMajor: ~w\nArea: ~w\nLanguage: ~w\nPeriod: ~w\nGoal: ~w\n", [Name1, Mail1, MajorChosen, Area1, Language1, Period1, Goal1]),
+
+	process(Area1,Language1,Period1,Minors),
+
+	nl,
+
+	writeln("the following minors are recommended:"),
+
+	nl,
+	show_list(Minors),
 	!.
 	

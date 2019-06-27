@@ -1,8 +1,12 @@
 :- module(inference_api,[get_all_language_labels/1,get_all_period_labels/1,get_all_area_of_interest_labels/1,get_minor/4,get_minors/4,process/4]).
 
-:- use_module(data/area_of_interest/aoi_service).
-:- use_module(data/period/period_service).
-:- use_module(data/language/language_service).
+:- 
+[
+    data/minors,
+    data/area_of_interest/aoi_service,
+    data/language/language_service,
+    data/period/period_service
+].
 
 % Process the user inputs; find recommended minors based on the parameters
 %
@@ -20,7 +24,9 @@ get_minors(Area, Language, Period, Minors) :-
 %
 %
 get_minor(Area, Language, Period, Minor) :-
-    is_in_area_of_interest(Minor, Area), is_in_language(Minor, Language), is_in_period(Minor, Period).
+    get_minor_id(Minor, MID),
+    is_in_area_of_interest(MID, Area), is_in_language(MID, Language), is_in_period(MID, Period),
+    get_minor_name(MID, Minor).
 
 %!	get_all_area_of_interest_labels
 %

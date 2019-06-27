@@ -1,7 +1,4 @@
-﻿% minor id
-:- module(minors,[get_minor_id/2,get_minor_name/2]).
-
-get_minor_name(Id,MinorName) :- minor(MinorName, Id).
+﻿get_minor_name(Id,MinorName) :- minor(MinorName, Id).
 
 get_minor_id(MinorName, Id) :- minor(MinorName, Id).
 
@@ -133,3 +130,4 @@ minor(wellbeing_by_design_behavioral_foundations_and_public_policy,125).
 minor(wiskunde_voor_natuurkundigen,126).
 minor(wiskunde_voor_nietnatuurkundigen,127).
 minor(youth_studies,128).
+

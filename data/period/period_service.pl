@@ -1,5 +1,3 @@
-:- module(period_service,[get_all_period/1,get_period_id/2,is_in_period/2]).
-
 :- 
 [
     period_labels,
@@ -10,9 +8,8 @@
 ].
 
 is_in_period(Minor, Period) :-
-    get_minor_id(Minor, MID),
     get_period_id(Period, PID),
-    starts(MID, PID).
+    starts(Minor, PID).
 
 get_period_id(Period, PID) :-
     period(Period, PID).

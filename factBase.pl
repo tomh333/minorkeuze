@@ -30,6 +30,19 @@
 :- dynamic period/1.
 :- dynamic goal/1.
 
+use_module(inference_api).
+
+% TODO _______________________________________________________________
+% Deze lijsten zouden opgevraagd moeten worden van de inference_api en
+% dan dynamisch een nummer moeten krijgen, nu moet er 1 op 1          
+% bijgehouden worden dat deze strings overeenkomen met die in de data.
+%       
+% De methods om dit te doen bestaan al voor:
+%  - Language; get_all_languages(Labels). 
+%  - Period; get_all_periods(Labels). 
+%  - Area of interests; get_all_area_of_interests(Labels). 
+% ____________________________________________________________________
+
 % Majors
 major("Aardwetenschappen", aarde_en_milieu).
 major("Sociale geografie en planologie", aarde_en_milieu).
@@ -69,18 +82,6 @@ map(majorChosen, "15", "Islam en Arabisch").
 map(majorChosen, "16", "Media en cultuur").
 map(majorChosen, "17", "Religiewetenschappen").
 map(majorChosen, "18", "Filosofie").
-
-
-% Map options to properties
-map(language, "1", english).
-map(language, "2", dutch).
-map(language, "0", _).
-
-map(period, "1", one).
-map(period, "2", two).
-map(period, "3", three).
-map(period, "4", four).
-map(period, "0", _).
 
 map(goal, "1", broadening).
 map(goal, "2", deepening).
