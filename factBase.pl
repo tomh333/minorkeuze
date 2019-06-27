@@ -32,17 +32,6 @@
 
 use_module(inference_api).
 
-% TODO _______________________________________________________________
-% Deze lijsten zouden opgevraagd moeten worden van de inference_api en
-% dan dynamisch een nummer moeten krijgen, nu moet er 1 op 1          
-% bijgehouden worden dat deze strings overeenkomen met die in de data.
-%       
-% De methods om dit te doen bestaan al voor:
-%  - Language; get_all_languages(Labels). 
-%  - Period; get_all_periods(Labels). 
-%  - Area of interests; get_all_area_of_interests(Labels). 
-% ____________________________________________________________________
-
 % Majors
 major("Aardwetenschappen", aarde_en_milieu).
 major("Sociale geografie en planologie", aarde_en_milieu).
