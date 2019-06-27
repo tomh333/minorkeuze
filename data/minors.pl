@@ -1,4 +1,11 @@
-﻿minor(aarde_klimaat_en_leven,1).
+﻿% minor id
+:- module(minors,[get_minor_id/2,get_minor_name/2]).
+
+get_minor_name(Id,MinorName) :- minor(MinorName, Id).
+
+get_minor_id(MinorName, Id) :- minor(MinorName, Id).
+
+minor(aarde_klimaat_en_leven,1).
 minor(aarde_water_en_milieu,2).
 minor(aardoppervlak_en_landvormen,3).
 minor(algemene_sociale_wetenschappen,4).

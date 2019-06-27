@@ -1,0 +1,36 @@
+:- multifile is_in_area/2.
+
+% talen_en_cultuur_communicatie
+is_in_area(7, talen_en_cultuur_communicatie).
+is_in_area(10, talen_en_cultuur_communicatie).
+is_in_area(14, talen_en_cultuur_communicatie).
+is_in_area(17, talen_en_cultuur_communicatie).
+is_in_area(22, talen_en_cultuur_communicatie).
+is_in_area(23, talen_en_cultuur_communicatie).
+is_in_area(33, talen_en_cultuur_communicatie).
+is_in_area(38, talen_en_cultuur_communicatie).
+is_in_area(40, talen_en_cultuur_communicatie).
+is_in_area(41, talen_en_cultuur_communicatie).
+is_in_area(45, talen_en_cultuur_communicatie).
+is_in_area(48, talen_en_cultuur_communicatie).
+is_in_area(49, talen_en_cultuur_communicatie).
+is_in_area(60, talen_en_cultuur_communicatie).
+is_in_area(61, talen_en_cultuur_communicatie).
+is_in_area(67, talen_en_cultuur_communicatie).
+is_in_area(69, talen_en_cultuur_communicatie).
+is_in_area(71, talen_en_cultuur_communicatie).
+is_in_area(72, talen_en_cultuur_communicatie).
+is_in_area(77, talen_en_cultuur_communicatie).
+is_in_area(78, talen_en_cultuur_communicatie).
+is_in_area(79, talen_en_cultuur_communicatie).
+is_in_area(80, talen_en_cultuur_communicatie).
+is_in_area(81, talen_en_cultuur_communicatie).
+is_in_area(83, talen_en_cultuur_communicatie).
+is_in_area(84, talen_en_cultuur_communicatie).
+is_in_area(85, talen_en_cultuur_communicatie).
+is_in_area(88, talen_en_cultuur_communicatie).
+is_in_area(89, talen_en_cultuur_communicatie).
+is_in_area(97, talen_en_cultuur_communicatie).
+is_in_area(115, talen_en_cultuur_communicatie).
+is_in_area(119, talen_en_cultuur_communicatie).
+is_in_area(120, talen_en_cultuur_communicatie).
