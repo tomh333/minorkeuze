@@ -1,36 +1,72 @@
 %%%%%%%%%%%%%%%%%%%%
 %% USER INTERFACE %%
 %%%%%%%%%%%%%%%%%%%%
+
 :- discontiguous menu/0.
+
+:- use_module(inference_api).
+:- [interaction_methods].
+
+:- dynamic name/1.
+:- dynamic mail/1.
+:- dynamic language/1.
+:- dynamic period/1.
+:- dynamic goal/1.
+:- dynamic area/1.
+:- dynamic major/1.
+:- dynamic master/1.
+
+clear :-
+  retractall(name(_)),
+  asserta(name(_)),
+  retractall(mail(_)),
+  asserta(mail(_)),
+  retractall(major(_)),
+  retractall(area(_)),
+  asserta(major(_)),
+  asserta(area(_)),
+  retractall(language(_)),
+  asserta(language(_)),
+  retractall(period(_)),
+  asserta(period(_)),
+  retractall(goal(_)),
+  asserta(goal(_)).
+:-clear.
 
 menu :-
 	repeat,		% backtrack to this position whenever something below fails.
 	nl,
 	format('~46t~72|~n'),
 	writeln("Hi, this program should help you with chosing a minor. Do you want to get started?"),
-	writeln("1. Let's go!"),
-	writeln("0. Exit"),
-  format('~46t~72|~n'),
-	read_line_to_string(user_input, Choice),
-	process_choice(Choice),
-	Choice == "0". % if Choice is not 0: fail, backtrack to repeat.
+	
+	let_user_select_next_action(
+		[
+			"Let's go!",
+			"Exit"
+		],
+		[
+			start_program,
+			exit_program
+		]
+	),
 
-% Executes when user chooses option 0
-process_choice("0") :-	% user choice is 0: succeed.
+  	format('~46t~72|~n').
+
+
+% Exit the program
+exit_program :-	
   format("Thank you and see you next time!~n~n~n"),
   clear, 
   !.
 
-% Gather information from the user when user chooses option 1
-process_choice("1") :-
+% Start the program
+start_program :-
 	ask_student_info,
 	ask_minor_preferences,
-	show_stuff,
+	show_results,
 	!.
 
-% Questions are layed out in fixed order
-% First ask about the student_info
-
+% Ask the user to enter their information
 ask_student_info :-
 	nl,
 	format("STUDENT INFORMATION ~n~46t~72|~n"),
@@ -44,16 +80,9 @@ ask_student_info :-
 	writeln("What's your e-mailaddress?"),
 	read_line_to_string(user_input, InputMail),
 	retractall(mail(_)),
-	assertz(mail(InputMail)),
-	
-	nl,
-	writeln("What major are you following?"),
-	\+ list_majors,
-	read_line_to_string(user_input, InputMajor),
-	map(majorChosen, InputMajor, Major),
-	retractall(majorChosen(_)),
-	assertz(majorChosen(Major)).
+	assertz(mail(InputMail)).
 
+% Ask the user about their preferences for their prospective minor
 ask_minor_preferences :-
 	nl,
 	name(Name),
@@ -64,11 +93,10 @@ ask_minor_preferences :-
 
 	get_all_language_labels(LanguageLabels),
 
-	read_user_select_from_list(
-		LanguageLabels, 
-		LanguageLabels, 
-		1, 
-	 	Language),
+	read_user_select(
+		LanguageLabels,  
+		Language
+	),
 	
 	retractall(language(_)),
 	assertz(language(Language)),
@@ -78,75 +106,80 @@ ask_minor_preferences :-
 
 	get_all_period_labels(PeriodLabels),
 
-	read_user_select_from_list(
+	read_user_select(
 		PeriodLabels, 
-		PeriodLabels, 
-		1, 
-	 	Period),
+		Period
+	),
 
 	retractall(period(_)),
 	assertz(period(Period)),
 	
 	nl,
 	writeln("What's your goal with your minor?"),
-		writeln("1. Broadening"),
-		writeln("2. Deepening"),
-		writeln("3. Preparation for master"),
-	read_line_to_string(user_input, InputGoal),
-	map(goal, InputGoal, Goal),
-	retractall(goal(_)),
-	assertz(goal(Goal)),
-	process_goal_choiche(InputGoal),	
-	!.
+	
+	let_user_select_next_action(
+		[
+			"Broadening",
+			"Deepening",
+			"Preparation for master"
+		],
+		[
+			ask_field_of_interest,
+			ask_major,
+			ask_master
+		]
+	).
 
-% In case the goal choiche is broadening, ask user to select an area of interest
-process_goal_choiche("1") :-
+ask_field_of_interest :-
 	nl,
 	writeln("What field are you most interested in?"),
 
 	get_all_area_of_interest_labels(Labels),
 
-	read_user_select_from_list(
-		Labels, 
-		Labels, 
-		1, 
-	 	Area),
+	read_user_select(
+		 Labels, 
+		 Area
+	),
 
 	retractall(area(_)),
-	assertz(area(Area)).
+	assertz(area(Area)),
 
-read_user_select_from_list([], List, _, Choiche) :-
-	read_line_to_string(user_input, SelectedIndexString),
-	atom_number(SelectedIndexString, X),	
-	nth1(X, List, Choiche).
+	show_results.
 
-read_user_select_from_list([HL|TL], List, Count, Choiche) :-
-	format("~w: ~w \n", [Count, HL]),
-	NewCount is Count+1,
-	read_user_select_from_list(TL, List, NewCount, Choiche).
+ask_major :-
+	nl,
+	writeln("What major are you currently following?"),
 
-show_list([]) :-
-	nl.
+	get_all_major_labels(Labels),
 
-show_list([LH|LT]) :-
-	writeln(LH),
-	show_list(LT).
+	read_user_select(
+		Labels,
+		Major
+	),
+
+	retractall(major(_)),
+	assertz(major(Major)),
+
+	show_results.
 	
-show_stuff :-
+show_results :-
 	name(Name1),
 	mail(Mail1),
-	majorChosen(MajorChosen),
-	area(Area1),
+	
 	language(Language1),
 	period(Period1),
 	goal(Goal1),
 
+	major(Major), 
+
+	area(Area1),
+
+	process_results([Area1, Major], Language1, Period1, Minors),
+
 	writeln("Based on the following info:"),
 
 	nl,
-	format("Name: ~w\nEmail: ~w\nMajor: ~w\nArea: ~w\nLanguage: ~w\nPeriod: ~w\nGoal: ~w\n", [Name1, Mail1, MajorChosen, Area1, Language1, Period1, Goal1]),
-
-	process(Area1,Language1,Period1,Minors),
+	format("Name: ~w\nEmail: ~w\nMajor: ~w\nArea: ~w\nLanguage: ~w\nPeriod: ~w\nGoal: ~w\n", [Name1, Mail1, Major, Area1, Language1, Period1, Goal1]),
 
 	nl,
 
@@ -155,4 +188,14 @@ show_stuff :-
 	nl,
 	show_list(Minors),
 	!.
+
+process_results([], _, _, _) :-
+	nl.
+
+process_results([H|T], Language, Period, Minors) :-
+	if_then_else(
+		nonvar(H),
+		process(H, Language, Period, Minors),
+		process_results(T, Language, Period, Minors)
+		).
 	

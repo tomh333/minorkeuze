@@ -1,14 +1,15 @@
 :- [
     aoi_labels,
-    areas/aoi_informatietechnologie,
-    areas/aoi_aarde_en_mileu,
-    areas/aoi_kunst_cultuur_en_geschiedenis,
-    areas/aoi_mens_dier_en_gezondheid,
-    areas/aoi_mens_en_gedrag,
-    areas/aoi_natuur,
-    areas/aoi_recht_economie_en_bestuur,
-    areas/aoi_religie_filosofie_en_ethiek,
-    areas/aoi_talen_en_cultuur_communicatie
+    areas/minors/aoi_informatietechnologie,
+    areas/minors/aoi_aarde_en_mileu,
+    areas/minors/aoi_kunst_cultuur_en_geschiedenis,
+    areas/minors/aoi_mens_dier_en_gezondheid,
+    areas/minors/aoi_mens_en_gedrag,
+    areas/minors/aoi_natuur,
+    areas/minors/aoi_recht_economie_en_bestuur,
+    areas/minors/aoi_religie_filosofie_en_ethiek,
+    areas/minors/aoi_talen_en_cultuur_communicatie,
+    areas/majors/aoi_majors
 ].
 
 is_in_area_of_interest(Minor, Area) :-
