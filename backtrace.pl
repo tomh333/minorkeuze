@@ -1,6 +1,6 @@
 %% VOEG HIER master(_) OOK TOE ALS DIE BESTAAT, EN DAN WERKT DE UITLEG ALS HET GOED IS VANZELF
 minorExp(_) :-
-	area(_), major(_), language(_), period(_), goal(_).
+	area(_), major(_), master(_), language(_), period(_), goal(_).
 
 % Provide explanations
 explain(Conclusion, Reasons):-
@@ -32,33 +32,33 @@ write_reason(area, [Reason]) :-
 	area(Value),
 	nonvar(Value), !,
 	string_upper(Value, UpValue),
-	swritef(Reason, " - The goal of your minor is to broaden your knowledge and you are interested in the area of %w\n", [UpValue]).
+	swritef(Reason, " - The goal of your minor is to broaden your knowledge and you are interested in the area of %w, minors in this area of interest are recommended.\n", [UpValue]).
 write_reason(major, [Reason]) :-
 	goal(Goal),
 	Goal == "Deepening",
     !,
     major(Major),
     string_upper(Major, UpValue),
-	swritef(Reason, " - Your current major is %w and the goal of your minor is to deepen your knowledge in this field\n", [UpValue]).
+	swritef(Reason, " - Your current major is %w and the goal of your minor is to deepen your knowledge in this field, minors from the same field are recommended.\n", [UpValue]).
 write_reason(language, [Reason]) :-
 	language(Value),
     nonvar(Value), !,
     string_upper(Value, UpValue),
-    swritef(Reason, " - Your preference for the language of the minor was: %w\n", [UpValue]).
+    swritef(Reason, " - Your preference for the language of the minor was: %w, the recommended minors are available in this language.\n", [UpValue]).
 
 
 write_reason(period, [Reason]) :-
 	period(Value),
 	nonvar(Value), !,
 	string_upper(Value, UpValue),
-	swritef(Reason, " - Your preference for the period of the minor was: %w\n", [UpValue]).
+	swritef(Reason, " - Your preference for the period of the minor was: %w, the recommended minors are available in this period.\n", [UpValue]).
 write_reason(master, [Reason]) :-
 	goal(Goal),
 	Goal == "Preparation for master",
-	period(Value),
+	master(Value),
 	nonvar(Value), !,
 	string_upper(Value, UpValue),
-	swritef(Reason, " - You wanted to prepare for your master ...... %w\n", [UpValue]).
+	swritef(Reason, " - You wanted to prepare for your master %w, and the recommended minor is a prerequisite for this master.\n", [UpValue]).
 write_reason(_, []).
 
 

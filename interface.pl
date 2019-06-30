@@ -22,8 +22,11 @@ clear :-
   retractall(mail(_)),
   asserta(mail(_)),
   retractall(major(_)),
+  retractall(master(_)),
+
   retractall(area(_)),
   asserta(major(_)),
+  asserta(master(_)),
   asserta(area(_)),
   retractall(language(_)),
   asserta(language(_)),
@@ -117,7 +120,7 @@ ask_minor_details :-
 ask_minor_preferences :-
 	nl,
 	name(Name),
-	format("Welcome ~w, let's go more in depth.~nMINOR PREFERENCES~nIf you choose an invalid option, the first or 'no preference' value will be chosen.~n~46t~72|~n", Name),
+	format("Welcome ~w, let's go more in depth.~nMINOR PREFERENCES~n~46t~72|~n", Name),
 		
 	nl,
 	writeln("What's your goal with your minor?"),
@@ -134,7 +137,7 @@ ask_minor_preferences :-
 			ask_master
 		],
 		assert_goal
-	).
+	). 
 
 assert_goal(Goal) :-
 	retractall(goal(_)),
@@ -156,7 +159,6 @@ ask_field_of_interest :-
 
 	ask_minor_details.
 
-
 ask_major :-
 	nl,
 	writeln("What major are you currently following?"),
@@ -172,6 +174,22 @@ ask_major :-
 	assertz(major(Major)),
 
 	ask_minor_details.
+
+ask_master :- 
+	nl,
+	writeln("What master would you like to prepare for?"),
+
+	get_all_master_labels(Labels),
+
+	read_user_select(
+		Labels,
+		Master
+	),
+
+	retractall(master(_)),
+	assertz(master(Master)),
+
+	ask_minor_details.
 	
 show_results :-		
 	name(Name),
@@ -179,8 +197,9 @@ show_results :-
 	period(Period1),
 	major(Major), 
 	area(Area1),
+	master(Master),
     
-	process_results([Area1, Major], Language1, Period1, Minors),
+	process_results([Area1, Major, Master], Language1, Period1, Minors),
 
 	nl,
 	format("RESULTS ~n~46t~72|~n"),
