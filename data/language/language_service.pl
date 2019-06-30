@@ -5,6 +5,9 @@
     languages/language_english
 ].
 
+is_in_language(_, Language) :-
+    language(Language, unknown).
+
 is_in_language(Minor, Language) :-
     get_language_id(Language, LID),
     is_language(Minor, LID).

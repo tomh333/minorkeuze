@@ -47,10 +47,14 @@ menu :-
 		[
 			start_program,
 			exit_program
-		]
+		],
+		assert_start_action
 	),
 
   	format('~46t~72|~n').
+
+assert_start_action(_):-
+	!.
 
 
 % Exit the program
@@ -82,12 +86,7 @@ ask_student_info :-
 	retractall(mail(_)),
 	assertz(mail(InputMail)).
 
-% Ask the user about their preferences for their prospective minor
-ask_minor_preferences :-
-	nl,
-	name(Name),
-	format("Welcome ~w, let's go more in depth.~nMINOR PREFERENCES~nIf you choose an invalid option, the first or 'no preference' value will be chosen.~n~46t~72|~n", Name),
-	
+ask_minor_details :-
 	nl,
 	writeln("In which language do you prefer your minor?"),
 
@@ -112,8 +111,14 @@ ask_minor_preferences :-
 	),
 
 	retractall(period(_)),
-	assertz(period(Period)),
-	
+	assertz(period(Period)).
+
+% Ask the user about their preferences for their prospective minor
+ask_minor_preferences :-
+	nl,
+	name(Name),
+	format("Welcome ~w, let's go more in depth.~nMINOR PREFERENCES~nIf you choose an invalid option, the first or 'no preference' value will be chosen.~n~46t~72|~n", Name),
+		
 	nl,
 	writeln("What's your goal with your minor?"),
 	
@@ -127,8 +132,13 @@ ask_minor_preferences :-
 			ask_field_of_interest,
 			ask_major,
 			ask_master
-		]
+		],
+		assert_goal
 	).
+
+assert_goal(Goal) :-
+	retractall(goal(_)),
+	assertz(goal(Goal)).
 
 ask_field_of_interest :-
 	nl,
@@ -144,7 +154,8 @@ ask_field_of_interest :-
 	retractall(area(_)),
 	assertz(area(Area)),
 
-	show_results.
+	ask_minor_details.
+
 
 ask_major :-
 	nl,
@@ -160,37 +171,37 @@ ask_major :-
 	retractall(major(_)),
 	assertz(major(Major)),
 
-	show_results.
+	ask_minor_details.
 	
-show_results :-
-	name(Name1),
-	mail(Mail1),
-	
+show_results :-		
+	name(Name),
 	language(Language1),
 	period(Period1),
-	goal(Goal1),
-
 	major(Major), 
-
 	area(Area1),
-
+    
 	process_results([Area1, Major], Language1, Period1, Minors),
 
-	writeln("Based on the following info:"),
+	nl,
+	format("RESULTS ~n~46t~72|~n"),
 
 	nl,
-	format("Name: ~w\nEmail: ~w\nMajor: ~w\nArea: ~w\nLanguage: ~w\nPeriod: ~w\nGoal: ~w\n", [Name1, Mail1, Major, Area1, Language1, Period1, Goal1]),
-
+	format("~w, we recommend the following minors:", [Name]),
 	nl,
-
-	writeln("the following minors are recommended:"),
 
 	nl,
 	show_list(Minors),
+	nl,
+
+	writeln("Because you had the following preferences:"),
+
+	nl,
+	explain(minorExp(_), Reasons),
+	print_reasons(Reasons),
 	!.
 
 process_results([], _, _, _) :-
-	nl.
+	!.
 
 process_results([H|T], Language, Period, Minors) :-
 	if_then_else(
@@ -198,4 +209,3 @@ process_results([H|T], Language, Period, Minors) :-
 		process(H, Language, Period, Minors),
 		process_results(T, Language, Period, Minors)
 		).
-	

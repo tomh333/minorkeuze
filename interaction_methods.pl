@@ -9,12 +9,12 @@ read_user_select([HL|TL], Choiche) :-
     ).
 
 % Show the user a list of actions and ask them to select an action, then perform that action
-let_user_select_next_action([HL|TL], Actions, Choiche) :-
+let_user_select_next_action([HL|TL], Actions, AssertMethod) :-
     if_then_else(
         read_user_select_from_list([HL|TL], [HL|TL], 1, Index, Choiche),
-        option_chosen_message(Choiche, Actions, Index),
+        option_chosen_message(Choiche, Actions, Index, AssertMethod),
         error_message(
-            [read_user_select([HL|TL], Choiche)]
+            [let_user_select_next_action([HL|TL], Actions, AssertMethod)]
         )
     ).
 
@@ -27,7 +27,8 @@ option_chosen_message(Option) :-
     format("Selected option: ~w",[Option]),
     nl.
 
-option_chosen_message(Option, Actions, Index) :-
+option_chosen_message(Option, Actions, Index, HA) :-
+    call(HA, Option),
     nth1(Index, Actions, ActionToCall),
     format("Selected option: ~w",[Option]),
     nl,
@@ -43,7 +44,7 @@ show_list([LH|LT]) :-
 	show_list(LT).
 
 show_list([]) :-
-	nl.
+	!.
 
 % Recursive helper methods
 read_user_select_from_list([], List, _, Index, Choiche) :-

@@ -7,6 +7,9 @@
     periods/period_four
 ].
 
+is_in_period(_, Period) :-
+    period(Period, unknown).
+
 is_in_period(Minor, Period) :-
     get_period_id(Period, PID),
     starts(Minor, PID).
